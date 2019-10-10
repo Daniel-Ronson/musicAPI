@@ -11,6 +11,13 @@ CREATE TABLE tracks (
     duration VARCHAR,  
     url VARCHAR,     
     artUrl VARCHAR NULL,
-    UNIQUE(title, artist, album)
+    UNIQUE(title, artist)
 );
 INSERT INTO tracks(title,album,artist,duration,url) VALUES('song title','album title','artist name','3.04','c://music/uniquesong');
+
+DROP TABLE IF EXISTS playlist;
+CREATE TABLE playlist (
+    title VARCHAR,
+    description VARCHAR
+
+);
