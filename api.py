@@ -6,11 +6,8 @@ import flask_api
 from flask import request, jsonify
 from flask_api import status, exceptions
 import pugsql
-
-
 app = flask_api.FlaskAPI(__name__)
 app.config.from_envvar('APP_CONFIG')
-
 queries = pugsql.module('queries/')
 queries.connect(app.config['DATABASE_URL'])
 
@@ -34,14 +31,11 @@ def all_tracks():
     all_tracks = queries.all_tracks()
     return list(all_tracks)
     
+#GET track that matches id number
 @app.route('/api/resources/tracks/<int:id>', methods=['GET'])
 def track(id):
     return queries.track_by_id(id=id)
-    
-#@app.route('/api/resources/tracks/title/<string:title>', methods=['GET'])
-#def track(title):
-#    return queries.track_by_title(title=title)
-    
+        
 @app.route('/api/resources/tracks', methods=['GET', 'POST'])
 def tracks():
     if request.method == 'GET':
@@ -49,12 +43,14 @@ def tracks():
     elif request.method == 'POST':
         return create_track(request.data)
 
-
-@app.route('/api/resources/tracks/update', methods=['PUT'])
+@app.route('/api/resources/tracks/update', methods=['GET','PUT'])
 def updates():
-        return update_track(request.args)	
+    if request.method == 'GET':
+        return (list(queries.all_tracks()))	
+    if request.method == 'PUT':
+        return update_track(request.data)   
         
-#When posting to flask api, erase trailing whitespaces
+#When posting to flask api, erase trailing whitespaces,
 #{"title":"Blue Submarine","album":"Yellow Submarine","artist":"The Beatles","duration":"3:20","url":"C://songs/s24","arturl":"C;//song/img/s24"},{"title":"Yellow Submarine","album":"Yellow Submarine","artist":"The Beatles","duration":"3:20","url":"C://songs/s23","arturl":"C;//song/img/s23"}
 #{"title":"Yellow Submarine","album":"Yellow Submarine","artist":"The Beatles","duration":"3:20","url":"C://songs/s23","arturl":"C;//song/img/s23"}
 def create_track(track):
@@ -70,37 +66,33 @@ def create_track(track):
         
     return track, status.HTTP_201_CREATED
 
-
-#will be PUT method /
-def update_track(query_parameters):
-    id = query_parameters.get('id')
-    title = query_parameters.get('title')
-    album = query_parameters.get('album')
-    #artist = query_parameters.get('artist')
-    #duration = query_parameters.get('duration')
-    #url = query_parameters.get('url')
-    #arturl = query_parameters.get('arturl')
-    
-    query = "SELECT * FROM tracks WHERE"
+#Requires 'id' or 'artist title'
+#{"changeColumn":"title","changeValueTo":"new song name", "artist": "The beatles","title":"Yellow Submarine",id":"1"}
+def update_track(track):
+    search_by_id = ['columnName','columnValue','id']
+    search_by_unique_constraint = ['columnName','columnValue','title', 'artist']
+    track = request.data
     to_filter = []
-
-    if id:
-        query += ' id=? AND'
-        to_filter.append(id)
-    if title:
-        query += ' title=? AND'
+    
+#{"changeColumn":"title","changeValueTo":"Yellow Submarine", "artist": "The Beatles","title":"old song"}
+    if 'changeColumn' in track and 'changeValueTo' in track and 'title' in track and 'artist' in track:
+        title = track['title']
+        artist = track['artist']
+        columnName = track['changeColumn']
+        columnValue = track['changeValueTo']
+        query = "UPDATE tracks SET {}=? WHERE title=? AND artist=?".format(columnName)
+        to_filter.append(columnValue)
         to_filter.append(title)
-    if album:
-        query += ' album=? AND'
-        to_filter.append(album)
-    if not (id or title or album):
-        raise exceptions.NotFound()
+        to_filter.append(artist)
+        queries._engine.execute(query,to_filter)
+#{"changeColumn":"title","changeValueTo":"Yellow Submarine","id":"2"}
+    elif 'id' in track and 'title' in track:
+        columnName = track['changeColumn']
+        columnValue = track['changeValueTo']
+        id = track['id']
+        queries._engine.execute("UPDATE tracks SET %s=? WHERE id=?" % (columnName,),(columnValue,id))
+    return track, status.HTTP_201_CREATED	
 
-    query = query[:-4] + ';'
-
-    results = queries._engine.execute(query, to_filter).fetchall()
-
-    return list(map(dict, results))
  
 #Search for track based off given parameter
 def filter_tracks(query_parameters):
@@ -126,11 +118,9 @@ def filter_tracks(query_parameters):
         to_filter.append(album) 
     if not (id or title or album or artist):
         raise exceptions.NotFound()
-
     query = query[:-4] + ';'
 
     results = queries._engine.execute(query, to_filter).fetchall()
 
     return list(map(dict, results))
-
 
