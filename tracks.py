@@ -50,6 +50,29 @@ def updates():
     if request.method == 'PUT':
         return update_track(request.data)   
         
+@app.route('/api/resources/tracks/delete', methods=['GET','POST'])
+def deletes():
+    if request.method =='GET':
+        return (list(queries.all_tracks()))	
+    if request.method == 'POST':
+        return delete_track(request.data)
+def delete_track(track):
+    track = request.data
+    required_fields = ['title','artist']
+    filter_query =[]
+    if not all([field in track for field in required_fields]):
+        raise exceptions.ParseError()
+    try:
+        #query = "DELETE from tracks WHERE title=? AND artist=?"
+        query = "DELETE from tracks WHERE id=?"
+       # filter_query.append(track['title'])
+       # filter_query.append(track['artist'])
+        filter_query.append(track['id'])
+        queries._engine.execute(query,to_filter)
+    except Exception as e:
+        return { 'error': str(e) }, status.HTTP_409_CONFLICT
+    return '', status.HTTP_204_NO_CONTENT
+
 #When posting to flask api, erase trailing whitespaces,
 #{"title":"Blue Submarine","album":"Yellow Submarine","artist":"The Beatles","duration":"3:20","url":"C://songs/s24","arturl":"C;//song/img/s24"},{"title":"Yellow Submarine","album":"Yellow Submarine","artist":"The Beatles","duration":"3:20","url":"C://songs/s23","arturl":"C;//song/img/s23"}
 #{"title":"Yellow Submarine","album":"Yellow Submarine","artist":"The Beatles","duration":"3:20","url":"C://songs/s23","arturl":"C;//song/img/s23"}
@@ -66,8 +89,7 @@ def create_track(track):
         
     return track, status.HTTP_201_CREATED
 
-#Requires 'id' or 'artist title'
-#{"changeColumn":"title","changeValueTo":"new song name", "artist": "The beatles","title":"Yellow Submarine",id":"1"}
+#PUT Method - Requires 'id' or 'artist title'
 def update_track(track):
     search_by_id = ['columnName','columnValue','id']
     search_by_unique_constraint = ['columnName','columnValue','title', 'artist']
@@ -86,11 +108,12 @@ def update_track(track):
         to_filter.append(artist)
         queries._engine.execute(query,to_filter)
 #{"changeColumn":"title","changeValueTo":"Yellow Submarine","id":"2"}
-    elif 'id' in track and 'title' in track:
+    elif 'changeColumn' in track and 'changeValueTo' in track and 'id' in track:
         columnName = track['changeColumn']
-        columnValue = track['changeValueTo']
-        id = track['id']
-        queries._engine.execute("UPDATE tracks SET %s=? WHERE id=?" % (columnName,),(columnValue,id))
+        query = "UPDATE tracks SET {}=? WHERE id =?".format(columnName)
+        to_filter.append(track['changeValueTo'])
+        to_filter.append(track['id'])
+        queries._engine.execute(query,to_filter)
     return track, status.HTTP_201_CREATED	
 
  
