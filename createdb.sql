@@ -1,19 +1,46 @@
--- $ sqlite3 users.db < sqlite.sql
+-- $ sqlite3 tracks.db < sqlite.sql
 
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
-DROP TABLE IF EXISTS users;
-CREATE TABLE users (
+DROP TABLE IF EXISTS tracks;
+CREATE TABLE tracks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username VARCHAR NOT NULL,
-    password VARCHAR NOT NULL,
-    firstname VARCHAR NOT NULL,
-    lastname VARCHAR NOT NULL,
-    email VARCHAR NOT NULL,
-    UNIQUE(username)
+    title VARCHAR,
+    album VARCHAR,
+    artist VARCHAR,
+    duration VARCHAR,
+    url VARCHAR,
+    artUrl VARCHAR NULL,
+    UNIQUE(title, artist)
 );
 
-DROP TABLE IF EXISTS description;
-CREATE TABLE description (
+INSERT INTO tracks(title,album,artist,duration,url) VALUES('song title','album title','artist name','3.04','c://music/uniquesong');
+
+DROP TABLE IF EXISTS playlist;
+CREATE TABLE playlist (
+    title VARCHAR,
     description VARCHAR
 );
+
+
+-- $ sqlite3 users.db < sqlite.sql
+
+/*
+*PRAGMA foreign_keys=OFF;
+*BEGIN TRANSACTION;
+*DROP TABLE IF EXISTS users;
+*CREATE TABLE users (
+    *id INTEGER PRIMARY KEY AUTOINCREMENT,
+    *username VARCHAR NOT NULL,
+    *password VARCHAR NOT NULL,
+    *firstname VARCHAR NOT NULL,
+    *lastname VARCHAR NOT NULL,
+    *email VARCHAR NOT NULL,
+    *UNIQUE(username)
+*);
+
+*DROP TABLE IF EXISTS description;
+*CREATE TABLE description (
+    *description VARCHAR
+*);
+*/
