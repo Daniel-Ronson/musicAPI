@@ -39,6 +39,8 @@ CREATE TABLE playlist (
     *UNIQUE(username)
 *);
 
+-- $ sqlite3 descriptions.db < sqlite.sql
+
 *DROP TABLE IF EXISTS descriptions;
 *CREATE TABLE descriptions (
 	*id INTEGER PRIMARY KEY AUTOINCREMENT,
