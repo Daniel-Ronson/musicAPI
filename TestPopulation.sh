@@ -18,3 +18,18 @@ curl \
   --request POST \
   --data '{"title":"Never Gonna Give You Up","album":"Whenever You Need Somebody","artist":"Rick AStley","duration":"3:33","url":"https://www.youtube.com/watch?v=dQw4w9WgXcQ","arturl":"https://upload.wikimedia.org/wikipedia/en/3/34/RickAstleyNeverGonnaGiveYouUp7InchSingleCover.jpg"}' \
   http://127.0.0.1:5100/api/resources/tracks
+  curl \
+  --header "Content-type: application/json" \
+  --request POST \
+  --data '{"username": "ArthurDayot123", "password": "elephant","firstname": "Arthur","lastname": "Dayot","email": "adayot0@csu.fullerton.edu"}' \
+  http://127.0.0.1:5200/api/resources/users/update
+    curl \
+  --header "Content-type: application/json" \
+  --request POST \
+  --data '{"username": "JoeSchmoe", "password": "tiger","firstname": "Joe","lastname": "Schmoe","email": "joe@schmoe.com"}' \
+  http://127.0.0.1:5200/api/resources/users/update
+  curl \
+  --header "Content-type: application/json" \
+  --request POST \
+  --data '{"description":"Test update description Up","username":"ArthurDayot123","url":"http://www.fullerton.edu/"}' \
+  http://127.0.0.1:5300/api/resources/descriptions
