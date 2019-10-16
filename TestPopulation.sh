@@ -1,20 +1,10 @@
 curl \
   --header "Content-type: application/json" \
-  --request PUT \
-  --data '{"id": 4, "title": "Test Title 4", "artist": "Test note", "duration":"3:40","url":"C://songs/s23","arturl":"C;//song/img/s23"}' \
-  http://localhost:3000
+  --request POST \
+  --data '{"title":"Test Insert song 2","album":"Test Album 1","artist":"Test artist 1","duration":"3:40","url":"C://songs/s23","arturl":"C;//song/img/s23"}' \
+  http://127.0.0.1:5100/api/resources/tracks
 curl \
   --header "Content-type: application/json" \
-  --request PUT \
-  --data '{"id": 5, "title": "Test Title 4", "artist": "Test note", "duration":"3:40","url":"C://songs/s23","arturl":"C;//song/img/s23"}' \
-  http://localhost:3000
-curl \
-  --header "Content-type: application/json" \
-  --request PUT \
-  --data '{"id": 6, "title": "Test Title 4", "artist": "Test note", "duration":"3:40","url":"C://songs/s23","arturl":"C;//song/img/s23"}' \
-  http://localhost:3000
-curl \
-  --header "Content-type: application/json" \
-  --request PUT \
-  --data '{"id": 7, "title": "Test Title 4", "artist": "Test note", "duration":"3:40","url":"C://songs/s23","arturl":"C;//song/img/s23"}' \
-  http://localhost:3000
+  --request POST \
+  --data '{"title":"Test Insert Song 2","album":"Test Album 2","artist":"Test artist 2","duration":"4:10","url":"C://songs/s23","arturl":"C;//song/img/s23"}' \
+  http://127.0.0.1:5100/api/resources/tracks
