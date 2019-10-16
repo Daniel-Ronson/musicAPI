@@ -39,8 +39,13 @@ CREATE TABLE playlist (
     *UNIQUE(username)
 *);
 
-*DROP TABLE IF EXISTS description;
-*CREATE TABLE description (
-    *description VARCHAR
+*DROP TABLE IF EXISTS descriptions;
+*CREATE TABLE descriptions (
+	*id INTEGER PRIMARY KEY AUTOINCREMENT,
+	*description VARCHAR,
+	*username VARCHAR,
+	*url VARCHAR
+	*FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
+	*FOREIGN KEY (url) REFERENCES tracks(url) ON DELETE CASCADE
 *);
 */
