@@ -27,26 +27,25 @@ def init_db():
 def home():
     return '''<h1>Descriptions Microservice</h1>'''
 
-@app.route('/api/resources/descriptions', methods=['GET'])
-def GetDescription():
-    all_users = queries.descriptions()
+@app.route('/api/resources/descriptions', methods=['GET', 'POST'])
+def descriptions():
+    if request.method == 'GET':
+        return get_description(request.args)
+    elif request.method == 'POST':
+        return create_description(request.data)
+
+def get_description():
+    get_description = queries.descriptions()
     return list(descriptions)
 
-@app.route('api/resources/descriptions', methods=['POST'])
-def CreateDescription(description):
+def create_description(description):
     description = request.data
     required_fields = ['description', 'username', 'url']
-    description = data['description']
-    username = data['username']
-    url = data['url']
-
-    query ="INSERT INTO descriptions(description, username, url) VALUES('"+description+"','"+username+"','"+url+"');"
-    print(query)
 
     if not all([field in description for field in required_fields]):
         raise exceptions.ParseError()
     try:
-        user['id'] = queries.CreateDescription(**description)
+        deacription['id'] = queries.create_description(**description)
     except Exception as e:
         return { 'error': str(e) }, status.HTTP_409_CONFLICT
 
