@@ -79,7 +79,8 @@ def delete_user(id):
         return { 'error': str(e) }, status.HTTP_404_NO_CONTENT
     return '', status.HTTP_204_NO_CONTENT
 
-#{"username": "ausername", "password": "abc123","firstname": "Jason","lastname": "mora","email": "aemail@hotmail.com","id": 2}
+
+#{"username": "ausername", "password": "abc123","firstname": "Daniel","lastname": "Ronson","email": "aemail@hotmail.com","id": 2}
 def create_user(user):
     user = request.data
     required_fields = ['username', 'password', 'firstname', 'lastname','email']
@@ -89,13 +90,14 @@ def create_user(user):
     lastname = user['lastname']
     email = user['email']
     hashed_password = generate_password_hash(password)
-    query ="INSERT INTO users(username, hashed_password, firstname, lastname, email) VALUES('"+username+"','"+hashed_password+"', '"+firstname+"', '"+lastname+"', '"+email+"' );"
-    print(query)
-
+    query ="INSERT INTO users(username, password, firstname, lastname, email) VALUES('"+username+"','"+hashed_password+"', '"+firstname+"', '"+lastname+"', ? );"
+    to_filter = []
+    to_filter.append(email)
     if not all([field in user for field in required_fields]):
         raise exceptions.ParseError()
     try:
-        user['id'] = queries.create_user(**user)
+        queries._engine.execute(query, to_filter)
+        #user['id'] = queries.create_user(**user)
     except Exception as e:
         return { 'error': str(e) }, status.HTTP_409_CONFLICT
 
