@@ -36,7 +36,7 @@ def descriptions():
 
 def get_description():
     get_description = queries.descriptions()
-    return list(descriptions)
+    return list(get_descriptions)
 
 def create_description(description):
     description = request.data

@@ -61,7 +61,7 @@ def updates():
     if request.method == 'PUT':
         return update_user(request.data)
 
-#@app.route('/api/resources/user', methods=['POST'])
+#{"username": "ausername", "password": "abc123","firstname": "Jason","lastname": "mora","email": "aemail@hotmail.com","id": 2}
 def create_user(user):
     user = request.data
     required_fields = ['username', 'password', 'firstname', 'lastname','email']
@@ -71,7 +71,7 @@ def create_user(user):
     lastname = user['lastname']
     email = user['email']
     hashed_password = generate_password_hash(password)
-    query ="INSERT INTO users(username, hashed_password, firstname, lastname, email) VALUES('"+username+"','"+hashed_password+"', '"+firstname+"', '"+lastname+"', '"+email+"' );"
+    query ="INSERT INTO users(username, password, firstname, lastname, email) VALUES('"+username+"','"+hashed_password+"', '"+firstname+"', '"+lastname+"', '"+email+"' );"
     print(query)
 
     if not all([field in user for field in required_fields]):
@@ -110,7 +110,7 @@ def update_user(user):
 def filter_users(query_parameters):
     id = query_parameters.get('id')
     username = query_parameters.get('username')
-    password = query_parameters.get('hashed_password')
+    hashed_password = query_parameters.get('password')
 
     query = "SELECT * FROM users WHERE"
     to_filter = []
@@ -121,8 +121,8 @@ def filter_users(query_parameters):
     if username:
         query += ' username=? AND'
         to_filter.append(username)
-    if password:
-        query += ' hashed_password=? AND'
+    if hashed_password:
+        query += ' password=? AND'
         to_filter.append(hashed_password)
     if not (id or username or hashed_password):
         raise exceptions.NotFound()

@@ -13,9 +13,9 @@ queries.connect(app.config['DATABASE_URL'])
 def init_db():
     with app.app_context():
         db = queries._engine.raw_connection()
-       # with app.open_resource('createdb.sql', mode='r') as f:
-        #    db.cursor().executescript(f.read())
-        #db.commit()
+        with app.open_resource('createdb.sql', mode='r') as f:
+            db.cursor().executescript(f.read())
+        db.commit()
 
 
 @app.route('/', methods=['GET'])
@@ -145,3 +145,21 @@ def filter_playlist(query_parameters):
     "playlist tracks":results_tracks
     }
     return list(map(dict, results_playlist))
+    
+@app.route('/playlist/delete/<int:id>', methods=['GET','DELETE'])
+def deletes(id):
+    all_playlists = queries.select_all_playlist()
+    if all_playlists:
+        return list(all_playlists)
+    if request.method == 'DELETE':
+        return delete_playlist(id)
+def delete_track(id):
+    playlistid = id
+    filter_query =[]
+    try:
+        query = "DELETE FROM playlist WHERE id=?"
+        filter_query.append(playlist)
+        queries._engine.execute(query,filter_query)
+    except Exception as e:
+        return { 'error': str(e) }, status.HTTP_404_NOT_FOUND
+    return '', status.HTTP_204_NO_CONTENT

@@ -51,25 +51,19 @@ def updates():
     if request.method == 'PUT':
         return update_track(request.data)   
         
-@app.route('/api/resources/tracks/delete', methods=['GET','DELETE'])
-def deletes():
+@app.route('/api/resources/tracks/delete/<int:id>', methods=['GET','DELETE'])
+def deletes(id):
     if request.method =='GET':
         return (list(queries.all_tracks())) 
     if request.method == 'DELETE':
-        return delete_track(request.data)
-def delete_track(track):
-    track = request.data
-    required_fields = ['title','artist']
+        return delete_track(id)
+def delete_track(id):
+    track_to_delete = id
+   # required_fields = ['title','artist']
     filter_query =[]
-   # if not all([field in track for field in required_fields]):
-   #     raise exceptions.ParseError()
     try:
-        #query = "DELETE from tracks WHERE title=? AND artist=?"
         query = "DELETE FROM tracks WHERE id=?"
-       # filter_query.append(track['title'])
-       # filter_query.append(track['artist'])
-       # filter_query.append(track['id'])
-        filter_query.append(2)
+        filter_query.append(track_to_delete)
         queries._engine.execute(query,filter_query)
     except Exception as e:
         return { 'error': str(e) }, status.HTTP_409_CONFLICT
