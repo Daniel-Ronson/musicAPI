@@ -1,6 +1,5 @@
 -- $ sqlite3 tracks.db < sqlite.sql
 
-PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 DROP TABLE IF EXISTS tracks;
 CREATE TABLE tracks (
@@ -17,7 +16,16 @@ INSERT INTO tracks(title,album,artist,duration,url) VALUES('song title','album t
 
 DROP TABLE IF EXISTS playlist;
 CREATE TABLE playlist (
+    id INTEGER primary key,
+    userid INTEGER,
     title VARCHAR,
-    description VARCHAR
-
+    description VARCHAR NULL
 );
+INSERT INTO playlist(userid,title,description) VALUES (1,'first playlist','cool songs');
+DROP TABLE IF EXISTS playlist_tracks;
+CREATE TABLE playlist_tracks(
+    playlist_id INTEGER,
+    track_id INTEGER,
+    FOREIGN KEY (playlist_id) REFERENCES playlist(id),
+    FOREIGN KEY (track_id) REFERENCES tracks(id)
+)

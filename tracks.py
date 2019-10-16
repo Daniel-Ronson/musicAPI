@@ -46,29 +46,30 @@ def tracks():
 @app.route('/api/resources/tracks/update', methods=['GET','PUT'])
 def updates():
     if request.method == 'GET':
-        return (list(queries.all_tracks()))	
+        return (list(queries.all_tracks())) 
     if request.method == 'PUT':
         return update_track(request.data)   
         
-@app.route('/api/resources/tracks/delete', methods=['GET','POST'])
+@app.route('/api/resources/tracks/delete', methods=['GET','DELETE'])
 def deletes():
     if request.method =='GET':
-        return (list(queries.all_tracks()))	
-    if request.method == 'POST':
+        return (list(queries.all_tracks())) 
+    if request.method == 'DELETE':
         return delete_track(request.data)
 def delete_track(track):
     track = request.data
     required_fields = ['title','artist']
     filter_query =[]
-    if not all([field in track for field in required_fields]):
-        raise exceptions.ParseError()
+   # if not all([field in track for field in required_fields]):
+   #     raise exceptions.ParseError()
     try:
         #query = "DELETE from tracks WHERE title=? AND artist=?"
-        query = "DELETE from tracks WHERE id=?"
+        query = "DELETE FROM tracks WHERE id=?"
        # filter_query.append(track['title'])
        # filter_query.append(track['artist'])
-        filter_query.append(track['id'])
-        queries._engine.execute(query,to_filter)
+       # filter_query.append(track['id'])
+        filter_query.append(2)
+        queries._engine.execute(query,filter_query)
     except Exception as e:
         return { 'error': str(e) }, status.HTTP_409_CONFLICT
     return '', status.HTTP_204_NO_CONTENT
@@ -114,7 +115,7 @@ def update_track(track):
         to_filter.append(track['changeValueTo'])
         to_filter.append(track['id'])
         queries._engine.execute(query,to_filter)
-    return track, status.HTTP_201_CREATED	
+    return track, status.HTTP_201_CREATED   
 
  
 #Search for track based off given parameter
@@ -144,6 +145,9 @@ def filter_tracks(query_parameters):
     query = query[:-4] + ';'
 
     results = queries._engine.execute(query, to_filter).fetchall()
-
+    #one = results['title']
+    #return results
+    #return list(results)
     return list(map(dict, results))
+    
 
