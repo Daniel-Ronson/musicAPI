@@ -25,7 +25,7 @@ def init_db():
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>descriptions Microservice</h1>'''
+    return '''<h1>Descriptions Microservice</h1>'''
 
 @app.route('/api/resources/descriptions', methods=['GET'])
 def GetDescription():
