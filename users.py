@@ -29,7 +29,7 @@ def init_db():
 @app.route('/', methods=['GET'])
 def home():
     return '''<h1>SPOTIFY, but without music streaming</h1>
-<p>A prototype API for delivering track, playlist, and user data.</p>'''
+<p>USERS MICROSERViCE</p>'''
 
 @app.route('/api/resources/user', methods=['GET'])
 def user():
