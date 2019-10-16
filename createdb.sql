@@ -43,7 +43,7 @@ CREATE TABLE users (
     email VARCHAR NOT NULL,
     UNIQUE(username)
 );
-
+INSERT INTO users (username,password,firstname,lastname,email) VALUES ('dan','123','danny','r','danny@gmail.com')
 /*
 -- $ sqlite3 descriptions.db < sqlite.sql
 

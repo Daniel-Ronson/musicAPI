@@ -44,7 +44,7 @@ def all_users():
 
 #GET user that matches id number
 @app.route('/api/resources/users/<int:id>', methods=['GET'])
-def users(id):
+def one_user(id):
     return queries.user_by_id(id=id)
 
 @app.route('/api/resources/users', methods=['GET', 'POST'])
@@ -61,17 +61,17 @@ def updates():
     if request.method == 'PUT':
         return update_user(request.data)
 
-@app.route('api/resources/user', methods=['POST'])
+#@app.route('/api/resources/user', methods=['POST'])
 def create_user(user):
     user = request.data
     required_fields = ['username', 'password', 'firstname', 'lastname','email']
-    username = data['username']
-    password = data['password']
-    firstname = data['firstname']
-    lastname = data['lastname']
-    email = data['email']
+    username = user['username']
+    password = user['password']
+    firstname = user['firstname']
+    lastname = user['lastname']
+    email = user['email']
     hashed_password = generate_password_hash(password)
-    query ="INSERT INTO users(username, hashed_password, firstname, lastname, email) VALUEs('"+username+"','"+hashed_password+"', '"+firstname+"', '"+lastname+"', '"+email+"' );"
+    query ="INSERT INTO users(username, hashed_password, firstname, lastname, email) VALUES('"+username+"','"+hashed_password+"', '"+firstname+"', '"+lastname+"', '"+email+"' );"
     print(query)
 
     if not all([field in user for field in required_fields]):
@@ -110,7 +110,7 @@ def update_user(user):
 def filter_users(query_parameters):
     id = query_parameters.get('id')
     username = query_parameters.get('username')
-    hashed_password = query_parameters.get('hashed_password')
+    password = query_parameters.get('hashed_password')
 
     query = "SELECT * FROM users WHERE"
     to_filter = []
