@@ -17,9 +17,9 @@ Parameters - ['columnName','columnValue','id'] or ['columnName','columnValue','t
 - user specifies which column to update and replacement data
 - title and artist are the unique constraint for the track table
 
-
 /api/resources/tracks/delete
 - deletes track by id number
+
 
 Playlist Microservice:
 
@@ -58,3 +58,10 @@ POST - query creates user
 /api/resources/users/update
 GET - query lists all users
 PUT - query updates user password
+
+
+Descriptions Microservice:
+
+/api/resources/descriptions
+GET  - query lists all descriptions
+POST - query inserts a username, description, url
