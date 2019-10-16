@@ -30,10 +30,19 @@ def home():
 @app.route('/api/resources/descriptions', methods=['GET', 'POST'])
 def descriptions():
     if request.method == 'GET':
-        return get_description(request.args)
+        return get_desc(request.args)
+       # return get_description(request.args)
     elif request.method == 'POST':
         return create_description(request.data)
-
+        
+def get_desc(params):
+    id = params.get('id')
+    to_filter = []
+    to_filter.append(id)
+    query = "SELECT * FROM descriptions WHERE id=?"
+    results = queries._engine.execute(query, to_filter).fetchall()
+    return list(map(dict, results))
+    
 def get_description():
     get_description = queries.descriptions()
     return list(get_descriptions)
@@ -45,7 +54,7 @@ def create_description(description):
     if not all([field in description for field in required_fields]):
         raise exceptions.ParseError()
     try:
-        deacription['id'] = queries.create_description(**description)
+        description['id'] = queries.create_description(**description)
     except Exception as e:
         return { 'error': str(e) }, status.HTTP_409_CONFLICT
 

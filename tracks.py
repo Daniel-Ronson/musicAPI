@@ -57,16 +57,16 @@ def deletes(id):
         return (list(queries.all_tracks())) 
     if request.method == 'DELETE':
         return delete_track(id)
+        
 def delete_track(id):
     track_to_delete = id
-   # required_fields = ['title','artist']
     filter_query =[]
     try:
         query = "DELETE FROM tracks WHERE id=?"
         filter_query.append(track_to_delete)
         queries._engine.execute(query,filter_query)
     except Exception as e:
-        return { 'error': str(e) }, status.HTTP_409_CONFLICT
+        return { 'error': str(e) }, status.HTTP_404_NO_CONTENT
     return '', status.HTTP_204_NO_CONTENT
 
 #When posting to flask api, erase trailing whitespaces,
