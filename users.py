@@ -88,7 +88,7 @@ def create_user(user):
     password = user['password']
 
 #To check username and password matching
-    if not all([field in data for field in required_fields]):
+    if not all([field in user for field in required_fields]):
         return authenticate_user(username,password)
 
     firstname = user['firstname']

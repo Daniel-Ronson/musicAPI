@@ -52,14 +52,20 @@ def playlist_creation():
         
 def create_playlist(playlist):
     playlist = request.data
-    required_fields = ['userid', 'title', 'descrtiption']
+   # required_fields = ['userid', 'title', 'descrtiption']
 
-    if not all([field in playlist for field in required_fields]):
-        raise exceptions.ParseError()
-    try:
-        playlist['id'] = queries.create_playlist(**playlist)
-    except Exception as e:
-        return { 'error': str(e) }, status.HTTP_409_CONFLICT
+    #if not all([field in playlist for field in required_fields]):
+     #   raise exceptions.ParseError()
+    query = "INSERT INTO playlist (title,userid,description) VALUES (?,?,?)"
+    to_filter = []
+    to_filter.append(playlist['title'])
+    to_filter.append(playlist['userid'])
+    to_filter.append(playlist['description'])
+    queries._engine.execute(query,to_filter)
+   # try:
+    #    playlist['id'] = queries.create_playlist(**playlist)
+    #except Exception as e:
+     #   return { 'error': str(e) }, status.HTTP_409_CONFLICT
         
     return playlist, status.HTTP_201_CREATED  
     
@@ -144,22 +150,24 @@ def filter_playlist(query_parameters):
     "playlist description":results_playlist,
     "playlist tracks":results_tracks
     }
-    return list(map(dict, results_playlist))
+    return list(map(dict, results_playlist)) and list(map(dict, results_tracks))
     
 @app.route('/playlist/delete/<int:id>', methods=['GET','DELETE'])
 def deletes(id):
-    all_playlists = queries.select_all_playlist()
-    if all_playlists:
-        return list(all_playlists)
+    if request.method =='GET':
+        all_playlists = queries.select_all_playlist()
+        if all_playlists:
+            return list(all_playlists)
     if request.method == 'DELETE':
         return delete_playlist(id)
-def delete_track(id):
+        
+def delete_playlist(id):
     playlistid = id
     filter_query =[]
-    try:
-        query = "DELETE FROM playlist WHERE id=?"
-        filter_query.append(playlist)
-        queries._engine.execute(query,filter_query)
-    except Exception as e:
-        return { 'error': str(e) }, status.HTTP_404_NOT_FOUND
+   # query = "DELETE FROM playlist WHERE id=?"
+    query = "DELETE FROM playlist WHERE userid = ?"
+    filter_query.append(playlistid)
+    queries._engine.execute(query,filter_query)
+   # except Exception as e:
+    #    return { 'error': str(e) }, status.HTTP_404_NOT_FOUND
     return '', status.HTTP_204_NO_CONTENT
