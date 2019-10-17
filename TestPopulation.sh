@@ -33,3 +33,19 @@ curl \
   --request POST \
   --data '{"description":"Test update description Up","username":"ArthurDayot123","url":"http://www.fullerton.edu/"}' \
   http://127.0.0.1:5300/api/resources/descriptions
+  curl \
+  --header "Content-type: application/json" \
+  --request POST \
+  --data '{"userid":"2","title":"Random Songs","description":"This playlist contains random songs"}' \
+  http://127.0.0.1:5000/playlist/create
+    curl \
+  --header "Content-type: application/json" \
+  --request POST \
+  --data '{"trackName":"Danger Zone","artist":"Kenny Loggins","playlistName":"Random Songs","userid":"2"}' \
+  http://127.0.0.1:5000/playlist/track/add
+      curl \
+  --header "Content-type: application/json" \
+  --request POST \
+  --data '{"trackName":"Never Gonna Give You Up","artist":"Rick Astley","playlistName":"Random Songs","userid":"2"}' \
+  http://127.0.0.1:5000/playlist/track/add
+
