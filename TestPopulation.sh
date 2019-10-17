@@ -16,7 +16,7 @@ curl \
   curl \
   --header "Content-type: application/json" \
   --request POST \
-  --data '{"title":"Never Gonna Give You Up","album":"Whenever You Need Somebody","artist":"Rick AStley","duration":"3:33","url":"https://www.youtube.com/watch?v=dQw4w9WgXcQ","arturl":"https://upload.wikimedia.org/wikipedia/en/3/34/RickAstleyNeverGonnaGiveYouUp7InchSingleCover.jpg"}' \
+  --data '{"title":"Never Gonna Give You Up","album":"Whenever You Need Somebody","artist":"Rick Astley","duration":"3:33","url":"https://www.youtube.com/watch?v=dQw4w9WgXcQ","arturl":"https://upload.wikimedia.org/wikipedia/en/3/34/RickAstleyNeverGonnaGiveYouUp7InchSingleCover.jpg"}' \
   http://127.0.0.1:5100/api/resources/tracks
   curl \
   --header "Content-type: application/json" \
