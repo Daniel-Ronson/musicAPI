@@ -22,12 +22,12 @@ curl \
   --header "Content-type: application/json" \
   --request POST \
   --data '{"username": "ArthurDayot123", "password": "elephant","firstname": "Arthur","lastname": "Dayot","email": "adayot0@csu.fullerton.edu"}' \
-  http://127.0.0.1:5200/api/resources/users/update
+  http://127.0.0.1:5200/api/resources/users
     curl \
   --header "Content-type: application/json" \
   --request POST \
   --data '{"username": "JoeSchmoe", "password": "tiger","firstname": "Joe","lastname": "Schmoe","email": "joe@schmoe.com"}' \
-  http://127.0.0.1:5200/api/resources/users/update
+  http://127.0.0.1:5200/api/resources/users
   curl \
   --header "Content-type: application/json" \
   --request POST \
