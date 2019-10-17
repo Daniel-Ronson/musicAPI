@@ -86,6 +86,11 @@ def create_user(user):
     required_fields = ['username', 'password', 'firstname', 'lastname','email']
     username = user['username']
     password = user['password']
+
+#To check username and password matching
+    if not all([field in data for field in required_fields]):
+        return authenticate_user(username,password)
+
     firstname = user['firstname']
     lastname = user['lastname']
     email = user['email']
@@ -125,6 +130,21 @@ def update_user(user):
         queries._engine.execute("UPDATE users SET %s=? WHERE id=?" % (columnName,),(columnValue,id))
     return user, status.HTTP_201_CREATED
 
+def authenticate_user(username,password):
+    query = "SELECT password FROM user WHERE username=?;"
+    to_filter= []
+    to_filter.append(username)
+    results = query_db(query, to_filter).fetch_all
+    if not results:
+        return jsonify(message="User Authentication unsuccessful. Try with new password"),401
+
+    authenticated = check_password_hash(results[0]['hashed_password'],password)
+    if authenticated:
+        return jsonify(message="User Authentication successful"),200
+
+    return jsonify(message="User Authentication unsuccessful. Try with new password"),401
+
+    return list(map(dict, results))
 
 #Search for users based off given parameter
 def filter_users(query_parameters):
@@ -134,6 +154,9 @@ def filter_users(query_parameters):
 
     query = "SELECT * FROM users WHERE"
     to_filter = []
+
+    if username and password:
+        return authenticate_user(username,password)
 
     if id:
         query += ' id=? AND'
