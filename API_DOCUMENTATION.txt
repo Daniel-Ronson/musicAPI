@@ -29,6 +29,10 @@ GET - select all playlist of given user id
 /playlist/all
 GET - select every playlist
 
+/playlist/delete/<int:id>
+GET - get playlist with sepcified id
+DELETE - delte playlist with specified id
+
 /playlist/create
 GET  - select playlist given id
 POST - create an empty playlist
