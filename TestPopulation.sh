@@ -31,11 +31,7 @@ curl \
 curl \
   --header "Content-type: application/json" \
   --request POST \
-<<<<<<< HEAD
   --data '{"description":"Test update description Up","username":"ArthurDayot123","url":"C;//song/img/s23"}' \
-=======
-  --data '{"description":"Test update description Up","username":"ArthurDayot123","url":"C://songs/s23"}' \
->>>>>>> 4651b371706a8cf5c6a69860d687fa855abaccfb
   http://127.0.0.1:5300/api/resources/descriptions
 curl \
   --header "Content-type: application/json" \

@@ -12,6 +12,7 @@ CREATE TABLE tracks (
     artUrl VARCHAR NULL,
     UNIQUE(title, artist)
 );
+
 INSERT INTO tracks(title,album,artist,duration,url) VALUES('song title','album title','artist name','3.04','c://music/uniquesong');
 
 DROP TABLE IF EXISTS playlist;
@@ -19,7 +20,7 @@ CREATE TABLE playlist (
     id INTEGER primary key,
     userid INTEGER,
     title VARCHAR,
-    description VARCHAR NULL
+    description VARCHAR NULL,
     UNIQUE(userid,title)
 );
 
@@ -28,7 +29,7 @@ CREATE TABLE playlist (
 DROP TABLE IF EXISTS playlist_tracks;
 CREATE TABLE playlist_tracks(
     playlist_id INTEGER,
-    track_id INTEGER
+    track_id INTEGER,
 
     FOREIGN KEY (playlist_id) REFERENCES playlist(id) ON DELETE CASCADE,
     FOREIGN KEY (track_id) REFERENCES tracks(id) ON DELETE CASCADE
