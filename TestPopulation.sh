@@ -36,16 +36,16 @@ curl \
 curl \
   --header "Content-type: application/json" \
   --request POST \
-  --data '{"userid":"2","title":"Random Songs","description":"This playlist contains random songs"}' \
+  --data '{"userid":2,"title":"Random Songs","description":"This playlist contains random songs"}' \
   http://127.0.0.1:5000/playlist/create
 curl \
   --header "Content-type: application/json" \
   --request POST \
-  --data '{"trackName":"Danger Zone","artist":"Kenny Loggins","playlistName":"Random Songs","userid":"2"}' \
+  --data '{"trackName":"Danger Zone","artist":"Kenny Loggins","playlistName":"Random Songs","userid":2}' \
   http://127.0.0.1:5000/playlist/track/add
 curl \
   --header "Content-type: application/json" \
   --request POST \
-  --data '{"trackName":"Never Gonna Give You Up","artist":"Rick Astley","playlistName":"Random Songs","userid":"2"}' \
+  --data '{"trackName":"Never Gonna Give You Up","artist":"Rick Astley","playlistName":"Random Songs","userid":2}' \
   http://127.0.0.1:5000/playlist/track/add
 
