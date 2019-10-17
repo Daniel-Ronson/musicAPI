@@ -31,7 +31,7 @@ curl \
 curl \
   --header "Content-type: application/json" \
   --request POST \
-  --data '{"description":"Test update description Up","username":"ArthurDayot123","url":"http://www.fullerton.edu/"}' \
+  --data '{"description":"Test update description Up","username":"ArthurDayot123","url":"C://songs/s23"}' \
   http://127.0.0.1:5300/api/resources/descriptions
 curl \
   --header "Content-type: application/json" \
